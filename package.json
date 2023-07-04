@@ -1,0 +1,29 @@
+{
+  "name": "userdetails",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server/server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ishuklaji/UserDetails.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ishuklaji/UserDetails/issues"
+  },
+  "homepage": "https://github.com/Ishuklaji/UserDetails#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.3.1",
+    "nodemon": "^2.0.22"
+  }
+}
