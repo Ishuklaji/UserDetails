@@ -8,7 +8,7 @@ exports.authenticateToken = (req, res, next) => {
         return res.status(401).json({ message: 'Authentication failed: Missing token' });
     }
 
-    jwt.verify(token, 'your-secret-key', (error, user) => {
+    jwt.verify(token, process.env.JWT_SECRET, (error, user) => {
         if (error) {
             return res.status(403).json({ message: 'Authentication failed: Invalid token' });
         }
