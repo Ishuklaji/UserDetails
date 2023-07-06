@@ -1,18 +1,15 @@
 const jwt = require('jsonwebtoken');
 
-// Authentication middleware
-exports.authenticateToken = (req, res, next) => {
-    const token = req.headers.authorization?.split(' ')[1];
-
-    if (!token) {
-        return res.status(401).json({ message: 'Authentication failed: Missing token' });
-    }
-
-    jwt.verify(token, process.env.JWT_SECRET, (error, user) => {
-        if (error) {
-            return res.status(403).json({ message: 'Authentication failed: Invalid token' });
-        }
-        req.user = user;
+const authMiddleware = (req, res, next) => {
+    try {
+        const token = req.header('Authorization').replace('Bearer ', '');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
         next();
-    });
+    } catch (error) {
+        console.error('Authentication failed:', error);
+        res.status(401).json({ message: 'Authentication failed' });
+    }
 };
+
+module.exports = authMiddleware;

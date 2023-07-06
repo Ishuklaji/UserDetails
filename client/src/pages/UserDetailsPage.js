@@ -1,77 +1,114 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Heading, FormControl, FormLabel, Input, Button, useToast } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Box, Heading, Text, Stack, Button, Input } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import api from '../api/api';
-import UserDetailsForm from '../components/UserDetailsForm';
 
-const UserDetailsPage = () => {
-    const toast = useToast();
+function UserDetailsPage() {
+    const [userDetails, setUserDetails] = useState(null);
+    const [updatedDetails, setUpdatedDetails] = useState({
+        name: '',
+        role: '',
+        email: '',
+        phoneNumber: '',
+    });
     const navigate = useNavigate();
-    const { userId } = useParams();
-    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const fetchUser = async () => {
+        const fetchUserDetails = async () => {
             try {
-                const response = await api.get(`/user/${userId}`);
-                setUser(response.data);
+                const response = await api.get('/api/users/profile');
+                if (response.status === 200) {
+                    setUserDetails(response.data);
+                    setUpdatedDetails(response.data);
+                } else {
+                    console.error(response.data.message);
+                }
             } catch (error) {
-                console.error(error);
-                toast({
-                    title: 'Error',
-                    description: 'Failed to fetch user details.',
-                    status: 'error',
-                    duration: 3000,
-                    isClosable: true,
-                });
+                console.error('An error occurred:', error.message);
             }
         };
 
-        fetchUser();
-    }, [userId, toast]);
+        fetchUserDetails();
+    }, []);
 
-    const handleFormSubmit = async (formData) => {
+    const handleUpdateDetails = async () => {
         try {
-            await api.put(`/user/${userId}`, formData);
-            toast({
-                title: 'Success',
-                description: 'User details updated successfully.',
-                status: 'success',
-                duration: 3000,
-                isClosable: true,
-            });
+            const response = await api.put(`/api/users/update/${userDetails._id}`, updatedDetails);
+            if (response.status === 200) {
+                console.log('User details updated successfully');
+            } else {
+                console.error(response.data.message);
+            }
         } catch (error) {
-            console.error(error);
-            toast({
-                title: 'Error',
-                description: 'Failed to update user details.',
-                status: 'error',
-                duration: 3000,
-                isClosable: true,
-            });
+            console.error('An error occurred:', error.message);
         }
     };
 
-    const handleCancel = () => {
-        navigate('/users');
+    const handleInputChange = (e) => {
+        setUpdatedDetails((prevDetails) => ({
+            ...prevDetails,
+            [e.target.name]: e.target.value,
+        }));
     };
 
     return (
-        <Box maxW="800px" mx="auto" mt={8} p={4}>
-            {user ? (
-                <>
-                    <Heading mb={4}>User Details</Heading>
-                    <UserDetailsForm
-                        user={user}
-                        onSubmit={handleFormSubmit}
-                        onCancel={handleCancel}
-                    />
-                </>
+        <Box p={4}>
+            <Heading as="h2" size="xl" mb={4}>
+                User Details
+            </Heading>
+            {userDetails ? (
+                <Stack spacing={4}>
+                    <Text>
+                        <strong>Name:</strong> {userDetails.name}
+                    </Text>
+                    <Text>
+                        <strong>Email:</strong> {userDetails.email}
+                    </Text>
+                    <Text>
+                        <strong>Role:</strong> {userDetails.role}
+                    </Text>
+                    <Text>
+                        <strong>Phone Number:</strong> {userDetails.phoneNumber}
+                    </Text>
+                    {userDetails.role === 'Super Admin' && (
+                        <Stack direction="row" spacing={4} alignItems="center">
+                            <Input
+                                name="name"
+                                value={updatedDetails.name}
+                                onChange={handleInputChange}
+                                placeholder="New Name"
+                            />
+                            <Input
+                                name="role"
+                                value={updatedDetails.role}
+                                onChange={handleInputChange}
+                                placeholder="New Role"
+                            />
+                            <Input
+                                name="email"
+                                value={updatedDetails.email}
+                                onChange={handleInputChange}
+                                placeholder="New Email"
+                            />
+                            <Input
+                                name="phoneNumber"
+                                value={updatedDetails.phoneNumber}
+                                onChange={handleInputChange}
+                                placeholder="New Phone Number"
+                            />
+                        </Stack>
+                    )}
+                    {userDetails.role === 'Super Admin' && (
+                        <Button onClick={handleUpdateDetails}>Update Details</Button>
+                    )}
+                </Stack>
             ) : (
-                <p>Loading user details...</p>
+                <Text>Loading user details...</Text>
             )}
         </Box>
     );
-};
+}
 
 export default UserDetailsPage;
+
+
