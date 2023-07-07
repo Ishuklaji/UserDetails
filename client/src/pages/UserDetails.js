@@ -54,8 +54,8 @@ const UserDetails = () => {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        email: "your_email_here",
-                        password: "your_password_here"
+                        email: "",
+                        password: ""
                     })
                 });
 
@@ -94,7 +94,6 @@ const UserDetails = () => {
 
             if (response.ok) {
                 console.log("User updated successfully");
-                // Update the local users state to reflect the updated user
                 const updatedUsers = users.map((user) =>
                     user._id === userId ? { ...user, ...updateData } : user
                 );
