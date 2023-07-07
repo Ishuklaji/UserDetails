@@ -1,38 +1,73 @@
-.App {
+/* src/App.css */
+.User {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  margin-top:100px;
+}
+
+h1 {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+form {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+input[type="text"],
+input[type="email"],
+button {
+  padding: 8px;
+  font-size: 16px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+input[type="text"],
+input[type="email"] {
+  flex: 1;
+}
+
+.filter {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+input[type="text"] {
+  flex: 1;
+}
+
+select {
+  padding: 5px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+li:last-child {
+  margin-bottom: 0;
+}
+
+li div {
+  margin-bottom: 5px;
+}
+
+button {
+  background-color: grey;
+  color: red;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #d32f2f;
 }
