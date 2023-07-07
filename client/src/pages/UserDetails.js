@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { BASE_URL } from "../config/config";
 import { Box, Text, Input, Button, FormControl, FormLabel } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const UserDetails = () => {
     const [users, setUsers] = useState([]);
@@ -114,7 +115,7 @@ const UserDetails = () => {
     };
 
     return (
-        <div>
+        <div style={{marginTop:'60px'}}>
             {users.map((user) => (
                 <Box key={user._id} p={4} borderWidth="1px" borderRadius="md" my={2}>
                     <Text fontWeight="bold">Name: {user.name}</Text>
@@ -122,61 +123,11 @@ const UserDetails = () => {
                     <Text>Email: {user.email}</Text>
                     <Text>Role: {user.role}</Text>
 
-                    {loggedInUser && loggedInUser.role === "Super Admin" && (
-                        <Box mt={2}>
-                            <FormControl>
-                                <FormLabel>Name</FormLabel>
-                                <Input
-                                    name="name"
-                                    value={updateData.name}
-                                    onChange={handleInputChange}
-                                    placeholder="New Name"
-                                />
-                            </FormControl>
-                            <FormControl mt={2}>
-                                <FormLabel>Role</FormLabel>
-                                <Input
-                                    name="role"
-                                    value={updateData.role}
-                                    onChange={handleInputChange}
-                                    placeholder="New Role"
-                                />
-                            </FormControl>
-                            <FormControl mt={2}>
-                                <FormLabel>Email</FormLabel>
-                                <Input
-                                    name="email"
-                                    value={updateData.email}
-                                    onChange={handleInputChange}
-                                    placeholder="New Email"
-                                />
-                            </FormControl>
-                            <FormControl mt={2}>
-                                <FormLabel>Password</FormLabel>
-                                <Input
-                                    name="password"
-                                    value={updateData.password}
-                                    onChange={handleInputChange}
-                                    placeholder="New Password"
-                                />
-                            </FormControl>
-                            <FormControl mt={2}>
-                                <FormLabel>Phone Number</FormLabel>
-                                <Input
-                                    name="phoneNumber"
-                                    value={updateData.phoneNumber}
-                                    onChange={handleInputChange}
-                                    placeholder="New Phone Number"
-                                />
-                            </FormControl>
-                            <Button mt={2} onClick
-                                ={handleUpdateUser.bind(null, user._id)}>
-                                Update User
-                            </Button>
-                        </Box>
-                    )}
+                   
+                     <Button><Link to={`/edit/${user._id}`}> Edit</Link></Button>
                 </Box>
             ))}
+           
         </div>
     );
 };

@@ -42,11 +42,11 @@ userRouter.post("/register", async (req, res) => {
 userRouter.post("/login", async (req, res) => {
     const { email, password } = req.body;
     let option = {
-        expiresIn: "5m"
+        expiresIn: "50m"
     };
 
     try {
-        let user = await UserModel.findOne({ email });
+        let user = await UserModel.findOne({ email: email });
 
         if (!user) {
             return res.send({
@@ -85,7 +85,7 @@ userRouter.post("/login", async (req, res) => {
 // Get user details
 userRouter.get("/:id", authenticator, async (req, res) => {
     const { id } = req.params;
-    const { role, user } = req.body;
+
 
     try {
         const user = await UserModel.findById(id);
@@ -94,15 +94,7 @@ userRouter.get("/:id", authenticator, async (req, res) => {
         }
 
         // Allow superadmin to edit any user's details
-        if (role === "Super Admin") {
-            res.send(user);
-        }
-        // Allow customer to view only their own details
-        else if (role === "Customer" && user.toString() === id) {
-            res.send(user);
-        } else {
-            res.status(401).send({ message: "Unauthorized access" });
-        }
+        res.send(user)
     } catch (error) {
         res.status(500).send({ message: "Error retrieving user details", error: error.message });
     }
@@ -111,8 +103,8 @@ userRouter.get("/:id", authenticator, async (req, res) => {
 // Update user details
 userRouter.put("/update/:id", authenticator, async (req, res) => {
     const { id } = req.params;
-    const { name, email, password, role, phoneNumber } = req.body;
-
+    const { name, email, phoneNumber } = req.body;
+    console.log(name, email, phoneNumber);
     try {
         const user = await UserModel.findById(id);
         if (!user) {
@@ -120,17 +112,12 @@ userRouter.put("/update/:id", authenticator, async (req, res) => {
         }
 
         // Only allow updating email, password, role, and phoneNumber if the user is a super admin
-        if (user.role === "Super Admin") {
-            user.name = name;
-            user.email = email;
-            user.password = password;
-            user.role = role;
-            user.phoneNumber = phoneNumber;
-            await user.save();
-            res.send({ message: "User details updated" });
-        } else {
-            res.status(401).send({ message: "Unauthorized access" });
-        }
+
+        user.name = name;
+        user.email = email;
+        user.phoneNumber = phoneNumber;
+        await user.save();
+
     } catch (error) {
         res.status(500).send({ message: "Error updating user details", error: error.message });
     }
