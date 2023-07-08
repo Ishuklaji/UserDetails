@@ -13,10 +13,8 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../config/config";
-import { getUser } from "../Redux/users/user.actions";
 
 export default function SignupPage() {
   const nav = useNavigate();
@@ -24,7 +22,7 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [role, setRole] = useState("Customer");
-  const [phoneNumber, setPhoneNumber] = useState(""); // Add phoneNumber state
+  const [phoneNumber, setPhoneNumber] = useState(""); 
 
   const handleSignup = async () => {
     let data = await axios.post(BASE_URL + "/user/register", {
@@ -32,7 +30,7 @@ export default function SignupPage() {
       email,
       password,
       role,
-      phoneNumber, // Include the phoneNumber in the request
+      phoneNumber, 
     });
     let { message, status } = data.data;
     if (status == 1) {
@@ -46,11 +44,10 @@ export default function SignupPage() {
   return (
     <Flex padding={4} w="100%">
       <Image
-        wi={"50%"}
-        src={
-          "https://img.freepik.com/free-vector/login-concept-illustration_114360-739.jpg?w=740&t=st=1676630553~exp=1676631153~hmac=6cbdb020ef439ca463660edbc265da0d05f487d529f69f814ee3f5de6e0f54cc"
-        }
-      ></Image>
+        maxW={["90%", "80%", "70%", "60%"]}
+        src="https://img.freepik.com/free-vector/login-concept-illustration_114360-739.jpg?w=740&t=st=1676630553~exp=1676631153~hmac=6cbdb020ef439ca463660edbc265da0d05f487d529f69f814ee3f5de6e0f54cc"
+        alt="Login Illustration"
+      />
       <VStack w={"50%"}>
         <Flex
           minH={"100vh"}

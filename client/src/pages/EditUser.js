@@ -26,17 +26,15 @@ export default function EditUser() {
     const { id } = useParams()
     const nav = useNavigate();
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [success, setSuccess] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState("");
-    const navigate = useNavigate()
 
     let { token } = useSelector((state) => state.userReducer)
 
 
     useEffect(() => {
-        fetch(`http://localhost:4000/user/${id}`, {
+        fetch(BASE_URL + `/user/${id}`, {
             headers: {
                 authorization: `Bearer ${token}`
             }
@@ -46,12 +44,6 @@ export default function EditUser() {
             setPhoneNumber(res.phoneNumber)
         })
     }, [])
-    useEffect(() => {
-        console.log(success);
-        if (success) {
-            return <UserDetails />
-        }
-    }, [success])
 
     const handleEdit = async () => {
         let obj = {
@@ -59,7 +51,7 @@ export default function EditUser() {
             email: email,
             phoneNumber: phoneNumber,
         }
-        console.log(success);
+
         let data = await fetch(BASE_URL + `/user/update/${id}`, {
             method: 'PUT',
             headers: {
@@ -70,10 +62,11 @@ export default function EditUser() {
 
         });
         let res = await data.json();
-        if (res)
+        if (res) {
             setSuccess(true)
-        console.log(success);
-        return;
+            alert("Details Edited Successfully");
+            nav("/userdetails");
+        }
     };
 
     return (
