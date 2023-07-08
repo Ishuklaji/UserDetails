@@ -1,26 +1,19 @@
 import React, { useEffect } from 'react'
-import { Navigate, useParams } from 'react-router-dom'
-
-import { Box, Flex, Image, VStack } from "@chakra-ui/react";
+import { useNavigate, useParams } from 'react-router-dom'
+import { Box, Flex, VStack } from "@chakra-ui/react";
 import {
     FormControl,
     FormLabel,
     Input,
-    Select,
     Stack,
-    Link,
     Button,
     Heading,
-    Text,
     useColorModeValue,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../config/config";
-import { getUser } from "../Redux/users/user.actions";
-import UserDetails from './UserDetails';
 
 export default function EditUser() {
     const { id } = useParams()
